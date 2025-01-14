@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client"
 import { Request, Response } from "express";
 import { sendTaskUpdate } from "./producer";
 
-const client = new PrismaClient()
+export const client = new PrismaClient()
 
 export const getAllTask = async(req:Request,res:Response) => {
     try {
@@ -20,9 +20,10 @@ export const getAllTask = async(req:Request,res:Response) => {
         })
         return
     } catch (error) {
+        console.log(error)
          res.status(400).json({
             success:false,
-            message:"Something went wrong!"
+            message:"Something went wrong! from all task"
       
         })
         
@@ -78,7 +79,7 @@ export const deleteTaskById = async(req:Request,res:Response) => {
 
    sendTaskUpdate({
     id:deleteTask.id,
-    action:"Task Deleted"
+    action:"DELETE"
    })
 res.status(200).json({
     success:true,
@@ -120,7 +121,7 @@ export const createTask = async(req:Request,res:Response) => {
 })
 sendTaskUpdate({
     id:newTask.id,
-    action:"Task Created"
+    action:"ADD"
    })
 res.status(200).json({
     success:true,
@@ -166,7 +167,7 @@ export const updateTaskById = async(req:Request,res:Response) => {
 
             sendTaskUpdate({
                 id:newTask.id,
-                action:"Task Updated"
+                action:"UPDATE"
                })
 
             res.status(200).json({
